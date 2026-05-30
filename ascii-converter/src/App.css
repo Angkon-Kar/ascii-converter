@@ -1,37 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #050505;
+  color: #0f0;
+  font-family: 'Share Tech Mono', monospace;
+  overflow: hidden;
+}
+
+/* Background Grid & Scanlines */
 .app-container {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  font-family: Arial, sans-serif;
-  background-color: #1a1a1a;
-  color: #ffffff;
+  background-image: 
+    linear-gradient(rgba(0, 255, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 0, 0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
+  position: relative;
 }
 
-.display-box {
-  margin-top: 2rem;
-  padding: 3rem;
-  background-color: #2d2d2d;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  min-width: 300px;
+.scanlines {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 10;
 }
 
-.key-name {
-  color: #4CAF50;
-  font-size: 2.5rem;
-  margin: 10px 0;
+/* Terminal Window */
+.terminal-window {
+  width: 90%;
+  max-width: 700px;
+  background: rgba(10, 15, 10, 0.85);
+  border: 1px solid #33ff33;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.2), inset 0 0 15px rgba(0, 255, 0, 0.1);
+  backdrop-filter: blur(5px);
+  z-index: 20;
+  overflow: hidden;
 }
 
-.ascii-value {
-  color: #00D8FF;
-  font-size: 4rem;
-  margin: 10px 0;
+.terminal-header {
+  background: #111;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #33ff33;
 }
 
-.placeholder-text {
-  font-size: 1.2rem;
+.window-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.red { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green { background: #27c93f; }
+
+.terminal-path {
+  margin-left: 20px;
   color: #888;
+  font-size: 0.9rem;
+}
+
+.terminal-body {
+  padding: 40px;
+  text-align: center;
+}
+
+/* Glitch Title */
+.glitch-title {
+  font-size: 3rem;
+  color: #fff;
+  text-shadow: 0 0 10px #0f0;
+  margin-bottom: 40px;
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-active {
+  animation: glitch 0.2s cubic-bezier(.25, .46, .45, .94) both infinite;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0) }
+  20% { transform: translate(-5px, 5px) }
+  40% { transform: translate(-5px, -5px) }
+  60% { transform: translate(5px, 5px) }
+  80% { transform: translate(5px, -5px) }
+  100% { transform: translate(0) }
+}
+
+/* Data Display */
+.data-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.data-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.data-label {
+  color: #33ff33;
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+}
+
+/* Holographic Boxes */
+.hologram-box {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #00f3ff;
+  background: rgba(0, 243, 255, 0.05);
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.3), inset 0 0 20px rgba(0, 243, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.success-box {
+  border-color: #33ff33;
+  background: rgba(51, 255, 51, 0.05);
+  box-shadow: 0 0 15px rgba(51, 255, 51, 0.3), inset 0 0 20px rgba(51, 255, 51, 0.2);
+}
+
+.key-text {
+  font-size: 4rem;
+  color: #00f3ff;
+  text-shadow: 0 0 10px #00f3ff;
+}
+
+.ascii-text {
+  font-size: 4.5rem;
+  color: #33ff33;
+  text-shadow: 0 0 10px #33ff33;
+}
+
+/* Hologram Scanner Animation */
+.scanner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 10px #fff;
+  opacity: 0.5;
+  animation: scan 2s linear infinite;
+}
+
+@keyframes scan {
+  0% { top: 0; }
+  50% { top: 100%; }
+  100% { top: 0; }
+}
+
+.connection {
+  color: #33ff33;
+  font-size: 3rem;
+  animation: pulse 1.5s infinite;
+}
+
+/* Idle State */
+.idle-state {
+  color: #33ff33;
+  font-size: 1.2rem;
+  line-height: 1.8;
+}
+
+.blinking-cursor {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
 }
