@@ -35,13 +35,13 @@ function App() {
             <span className="dot green"></span>
           </div>
           {/* Ekhane name change kora hoyeche */}
-          <p className="terminal-path">guest@system:~/ascii-decoder</p>
+          <p className="terminal-path">guest@system:~/Ascii_Key_Converter</p>
         </header>
         
         <div className="terminal-body">
           <h1 
             className={`glitch-title ${isGlitching ? 'glitch-active' : ''}`} 
-            data-text="ASCII_DECODER"
+            data-text="ASCII_KEY_CONVERTER"
           >
             ASCII_DECODER
           </h1>
