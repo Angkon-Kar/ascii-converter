@@ -1,0 +1,37 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.display-box {
+  margin-top: 2rem;
+  padding: 3rem;
+  background-color: #2d2d2d;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  min-width: 300px;
+}
+
+.key-name {
+  color: #4CAF50;
+  font-size: 2.5rem;
+  margin: 10px 0;
+}
+
+.ascii-value {
+  color: #00D8FF;
+  font-size: 4rem;
+  margin: 10px 0;
+}
+
+.placeholder-text {
+  font-size: 1.2rem;
+  color: #888;
+}
