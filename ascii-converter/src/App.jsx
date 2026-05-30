@@ -16,7 +16,6 @@ function App() {
         ascii: event.keyCode 
       });
 
-      // Glitch effect trigger on key press
       setIsGlitching(true);
       setTimeout(() => setIsGlitching(false), 200);
     };
@@ -35,7 +34,8 @@ function App() {
             <span className="dot yellow"></span>
             <span className="dot green"></span>
           </div>
-          <p className="terminal-path">user@angkon:~/ascii-nexus</p>
+          {/* Ekhane name change kora hoyeche */}
+          <p className="terminal-path">guest@system:~/ascii-decoder</p>
         </header>
         
         <div className="terminal-body">
@@ -52,7 +52,10 @@ function App() {
                 <div className="data-block">
                   <span className="data-label">INPUT_KEY</span>
                   <div className="hologram-box">
-                    <span className="key-text">{keyInfo.key}</span>
+                    {/* Text boro hole extra class add hobe */}
+                    <span className={`key-text ${keyInfo.key.length > 3 ? 'long-text' : ''}`}>
+                      {keyInfo.key}
+                    </span>
                     <div className="scanner"></div>
                   </div>
                 </div>
