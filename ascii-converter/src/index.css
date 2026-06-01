@@ -34,34 +34,34 @@ body {
   z-index: 10;
 }
 
-/* Easter Egg Overlay */
+/* Dynamic Easter Egg Overlay */
 .easter-egg-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(255, 0, 0, 0.85);
   z-index: 999;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  animation: bgFlash 0.5s infinite alternate;
+  /* Flash animation based on opacity instead of color now */
+  animation: pulseOpacity 0.3s infinite alternate;
 }
 
-@keyframes bgFlash {
-  from { background: rgba(150, 0, 0, 0.9); }
-  to { background: rgba(255, 0, 0, 0.95); }
+@keyframes pulseOpacity {
+  from { opacity: 0.85; }
+  to { opacity: 1; }
 }
 
 .easter-text {
   font-size: 4rem;
-  color: #fff;
-  text-shadow: 0 0 20px #fff;
+  z-index: 1000;
 }
 .easter-subtext {
   font-size: 1.5rem;
-  color: #fff;
   margin-top: 10px;
   letter-spacing: 3px;
+  z-index: 1000;
+  font-weight: bold;
 }
 
 /* Terminal Window */

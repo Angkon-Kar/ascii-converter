@@ -1,16 +1,26 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
 
+// 1. Easter Egg Dictionary (Word, Color, and Message)
+const easterEggsConfig = {
+  HACK: { color: 'rgba(255, 0, 0, 0.85)', title: 'SYSTEM COMPROMISED', subtitle: 'UNAUTHORIZED ACCESS DETECTED...' },
+  ANGKON: { color: 'rgba(14, 165, 233, 0.9)', title: 'WELCOME ADMIN', subtitle: 'INITIATING MASTER PROTOCOLS...' },
+  BUG: { color: 'rgba(255, 153, 0, 0.85)', title: 'VULNERABILITY FOUND', subtitle: 'EXPLOIT PAYLOAD READY...' },
+  CODING: { color: 'rgba(51, 255, 51, 0.85)', title: 'DEV MODE ACTIVATED', subtitle: 'COMPILING SOURCE CODE...' },
+  PUPIL: { color: 'rgba(0, 255, 255, 0.85)', title: 'CODEFORCES SYNC', subtitle: 'RATING UPLINK ESTABLISHED...' },
+  SUDO: { color: 'rgba(255, 255, 255, 0.9)', title: 'ROOT PRIVILEGES', subtitle: 'USER ELEVATED TO SUPERUSER.', textDark: true }
+};
+
 function App() {
   const [keyInfo, setKeyInfo] = useState(null);
   const [isGlitching, setIsGlitching] = useState(false);
   const [history, setHistory] = useState([]);
-  const [easterEgg, setEasterEgg] = useState(false);
   
-  // Ref used to track sequence without re-rendering every time
+  // Easter egg ke ebar object hisabe store korchi jate color/text pay
+  const [activeEgg, setActiveEgg] = useState(null); 
+  
   const sequenceRef = useRef(""); 
 
-  // Sound Generator (Web Audio API - No external files needed!)
   const playSound = () => {
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -26,7 +36,7 @@ function App() {
       osc.start();
       osc.stop(audioCtx.currentTime + 0.1);
     } catch (error) {
-      console.log("Audio not supported in this browser");
+      console.log("Audio not supported");
     }
   };
 
@@ -36,7 +46,6 @@ function App() {
         event.preventDefault();
       }
       
-      // Play sound on press
       playSound();
 
       const currentKey = event.key === ' ' ? 'Space' : event.key;
@@ -51,27 +60,31 @@ function App() {
         bin: binVal
       });
 
-      // Update History Log (Keep last 5)
       setHistory(prev => {
-        const newLog = `> [${currentKey}] INTERCEPTED : ASCII ${asciiVal} | HEX ${hexVal}`;
+        const newLog = `> [${currentKey}] INTERCEPTED : ASCII ${asciiVal}`;
         return [newLog, ...prev].slice(0, 5);
       });
 
-      // Easter Egg Logic: Track "HACK"
+      // 2. Multi-word Easter Egg Logic
       const char = event.key.toUpperCase();
-      if (char.length === 1) { // Only track single letters
+      if (char.length === 1) { 
         sequenceRef.current += char;
-        if (sequenceRef.current.length > 10) {
-          sequenceRef.current = sequenceRef.current.slice(-10);
+        // Buffer size 15 rakhlam jate boro word o dhorte pare
+        if (sequenceRef.current.length > 15) {
+          sequenceRef.current = sequenceRef.current.slice(-15);
         }
-        if (sequenceRef.current.includes("HACK")) {
-          setEasterEgg(true);
-          sequenceRef.current = ""; // Reset after trigger
-          setTimeout(() => setEasterEgg(false), 3500); // Hide after 3.5s
+        
+        // Check korchi kono word match holo kina
+        for (const [word, data] of Object.entries(easterEggsConfig)) {
+          if (sequenceRef.current.includes(word)) {
+            setActiveEgg(data); // Set color and message
+            sequenceRef.current = ""; 
+            setTimeout(() => setActiveEgg(null), 3500); 
+            break; 
+          }
         }
       }
 
-      // Trigger Glitch Animation
       setIsGlitching(true);
       setTimeout(() => setIsGlitching(false), 150);
     };
@@ -84,11 +97,25 @@ function App() {
     <div className="app-container">
       <div className="scanlines"></div>
       
-      {/* Easter Egg Overlay */}
-      {easterEgg && (
-        <div className="easter-egg-overlay">
-          <h1 className="glitch-title easter-text" data-text="SYSTEM COMPROMISED">SYSTEM COMPROMISED</h1>
-          <p className="easter-subtext">UNAUTHORIZED ACCESS DETECTED...</p>
+      {/* Dynamic Easter Egg Overlay */}
+      {activeEgg && (
+        <div 
+          className="easter-egg-overlay"
+          style={{ backgroundColor: activeEgg.color }}
+        >
+          <h1 
+            className="glitch-title easter-text" 
+            data-text={activeEgg.title}
+            style={{ color: activeEgg.textDark ? '#000' : '#fff', textShadow: activeEgg.textDark ? 'none' : '0 0 20px #fff' }}
+          >
+            {activeEgg.title}
+          </h1>
+          <p 
+            className="easter-subtext"
+            style={{ color: activeEgg.textDark ? '#222' : '#fff' }}
+          >
+            {activeEgg.subtitle}
+          </p>
         </div>
       )}
 
@@ -115,7 +142,6 @@ function App() {
               <div className="active-interface">
                 <div className="data-grid">
                   
-                  {/* INPUT KEY */}
                   <div className="data-block">
                     <span className="data-label">INPUT_KEY</span>
                     <div className="hologram-box">
@@ -126,7 +152,6 @@ function App() {
                     </div>
                   </div>
                   
-                  {/* ASCII VALUE */}
                   <div className="data-block">
                     <span className="data-label">DECIMAL (ASCII)</span>
                     <div className="hologram-box success-box">
@@ -135,7 +160,6 @@ function App() {
                     </div>
                   </div>
 
-                  {/* HEX VALUE */}
                   <div className="data-block">
                     <span className="data-label">HEXADECIMAL</span>
                     <div className="hologram-box alt-box">
@@ -144,7 +168,6 @@ function App() {
                     </div>
                   </div>
 
-                  {/* BINARY VALUE */}
                   <div className="data-block">
                     <span className="data-label">BINARY</span>
                     <div className="hologram-box alt-box">
@@ -155,7 +178,6 @@ function App() {
 
                 </div>
 
-                {/* HISTORY LOG */}
                 <div className="history-log">
                   <p className="log-header">--- REALTIME INTERCEPT LOG ---</p>
                   {history.map((log, index) => (
@@ -168,7 +190,7 @@ function App() {
               <div className="idle-state">
                 <p>SYSTEM.READY</p>
                 <p>AWAITING_INPUT<span className="blinking-cursor">█</span></p>
-                <p className="hint-text">(Try typing 'HACK' for a surprise)</p>
+                <p className="hint-text">Secret commands online...</p>
               </div>
             )}
           </div>
